@@ -72,11 +72,6 @@ if ( ! class_exists( 'WC4BP_Loader' ) ) {
 		static $active = false;
 
 		/**
-		 * @var Freemius
-		 */
-		public static $freemius;
-
-		/**
 		 * Is true when the plugin is the premium version
 		 *
 		 * @var bool
@@ -104,13 +99,6 @@ if ( ! class_exists( 'WC4BP_Loader' ) ) {
 				require_once dirname( __FILE__ ) . '/class/wc4bp-required.php';
 				require_once dirname( __FILE__ ) . '/class/wc4bp-upgrade.php';
 
-				// Init Freemius.
-				self::$freemius = $this->wc4bp_fs();
-				self::$freemius->set_basename( true, __FILE__ );
-				/**
-				 * Execute on freemius load to notify the addons
-				 */
-				do_action( 'wc4bp_core_fs_loaded' );
 				$requirements = new WC4BP_Required_PHP( 'wc4bp' );
 				if ( $requirements->satisfied() ) {
 					new WC4BP_Required();
@@ -127,8 +115,6 @@ if ( ! class_exists( 'WC4BP_Loader' ) ) {
 
 						add_action( 'plugins_loaded', array( $this, 'update' ), 10 );
 						add_action( 'plugins_loaded', array( $this, 'wc4bp_translate' ) );
-
-						self::getFreemius()->add_action( 'after_uninstall', array( $this, 'uninstall_cleanup' ) );
 					}
 				} else {
 					$faux_plugin = new WP_Faux_Plugin( __( 'WooBuddy -> WooCommerce BuddyPress Integration', 'wc4bp' ), $requirements->getResults() );
@@ -142,47 +128,6 @@ if ( ! class_exists( 'WC4BP_Loader' ) ) {
 
 		public function get_version() {
 			return self::VERSION;
-		}
-
-		/**
-		 * Create a helper function for easy Freemius SDK access.
-		 *
-		 * @return Freemius
-		 */
-		public function wc4bp_fs() {
-			global $wc4bp_fs;
-			try {
-				if ( ! isset( $wc4bp_fs ) ) {
-					// Include Freemius SDK.
-					require_once WC4BP_ABSPATH_CLASS_PATH . 'includes/freemius/start.php';
-
-					$wc4bp_fs = fs_dynamic_init( array(
-						'id'                  => '425',
-						'slug'                => 'wc4bp',
-						'type'                => 'plugin',
-						'public_key'          => 'pk_71d28f28e3e545100e9f859cf8554',
-						'is_premium'          => true,
-						'premium_suffix'      => 'premium',
-						'has_premium_version' => true,
-						'has_addons'          => true,
-						'has_paid_plans'      => true,
-						'trial'               => array(
-							'days'               => 14,
-							'is_require_payment' => false,
-						),
-						'has_affiliation'     => 'all',
-						'menu'                => array(
-							'slug'    => 'wc4bp-options-page',
-							'support' => false,
-						)
-					) );
-				}
-			}
-			catch ( Exception $exception ) {
-				self::get_exception_handler()->save_exception( $exception->getTrace() );
-			}
-
-			return $wc4bp_fs;
 		}
 
 		/**
@@ -204,13 +149,6 @@ if ( ! class_exists( 'WC4BP_Loader' ) ) {
 			define( 'WC4BP_CSS', WC4BP_URLPATH . 'admin/css/' );
 			define( 'WC4BP_JS', WC4BP_URLPATH . 'admin/js/' );
 			define( 'WC4BP_IMAGES', WC4BP_URLPATH . 'admin/images/' );
-		}
-
-		/**
-		 * @return Freemius
-		 */
-		public static function getFreemius() {
-			return self::$freemius;
 		}
 
 		/**

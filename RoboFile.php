@@ -23,10 +23,6 @@ class RoboFile extends RoboFileBase {
 		return 'wc4bp-basic-integration';
 	}
 
-	public function pluginFreemiusId() {
-		return 425;
-	}
-
 	public function minifyImagesDirectories() {
 		return array();
 	}

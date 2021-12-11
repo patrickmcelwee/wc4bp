@@ -138,20 +138,20 @@ class wc4bp_admin extends wc4bp_base {
 			$tab_my_account_disabled      = 0;
 			$tab_my_account_shop_label    = wc4bp_Manager::$shop_label;
 			$tab_my_account_shop_url      = wc4bp_Manager::$shop_slug;
-			if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-				if ( isset( $wc4bp_options['tab_my_account_shop_url'] ) ) {
-					$tab_my_account_shop_url                  = empty( $wc4bp_options['tab_my_account_shop_url'] ) ? wc4bp_Manager::$shop_slug : sanitize_title( $wc4bp_options['tab_my_account_shop_url'] );
-					$wc4bp_options['tab_my_account_shop_url'] = $tab_my_account_shop_url;
-					wc4bp_Manager::del_cached_option_or_default( 'tab_my_account_shop_url' );
-					update_option( 'wc4bp_options', $wc4bp_options );
-				}
-				if ( isset( $wc4bp_options['tab_my_account_shop_label'] ) ) {
-					$tab_my_account_shop_label                  = empty( $wc4bp_options['tab_my_account_shop_label'] ) ? wc4bp_Manager::$shop_label : sanitize_text_field( $wc4bp_options['tab_my_account_shop_label'] );
-					$wc4bp_options['tab_my_account_shop_label'] = $tab_my_account_shop_label;
-					wc4bp_Manager::del_cached_option_or_default( 'tab_my_account_shop_label' );
-					update_option( 'wc4bp_options', $wc4bp_options );
-				}
-			}
+
+      if ( isset( $wc4bp_options['tab_my_account_shop_url'] ) ) {
+        $tab_my_account_shop_url                  = empty( $wc4bp_options['tab_my_account_shop_url'] ) ? wc4bp_Manager::$shop_slug : sanitize_title( $wc4bp_options['tab_my_account_shop_url'] );
+        $wc4bp_options['tab_my_account_shop_url'] = $tab_my_account_shop_url;
+        wc4bp_Manager::del_cached_option_or_default( 'tab_my_account_shop_url' );
+        update_option( 'wc4bp_options', $wc4bp_options );
+      }
+      if ( isset( $wc4bp_options['tab_my_account_shop_label'] ) ) {
+        $tab_my_account_shop_label                  = empty( $wc4bp_options['tab_my_account_shop_label'] ) ? wc4bp_Manager::$shop_label : sanitize_text_field( $wc4bp_options['tab_my_account_shop_label'] );
+        $wc4bp_options['tab_my_account_shop_label'] = $tab_my_account_shop_label;
+        wc4bp_Manager::del_cached_option_or_default( 'tab_my_account_shop_label' );
+        update_option( 'wc4bp_options', $wc4bp_options );
+      }
+
 			if ( isset( $wc4bp_options['tab_activity_disabled'] ) ) {
 				$tab_activity_disabled = 1;
 			}
@@ -221,15 +221,11 @@ class wc4bp_admin extends wc4bp_base {
 
 			$i = 3;
 			foreach ( WC4BP_MyAccount::get_available_endpoints() as $end_point_key => $end_point_name ) {
-				if ( WC4BP_Loader::getFreemius()->is__premium_only() || WC4BP_Loader::getFreemius()->is_trial() ) {
-					$tabs_array[ $end_point_key ]['position']   = isset( $this->wc4bp_options['position'][ 'wc4bp_endpoint_' . $end_point_key ] ) ? $this->wc4bp_options['position'][ 'wc4bp_endpoint_' . $end_point_key ] : $i;
-					$tabs_array[ $end_point_key ]['enable']     = isset( $this->wc4bp_options[ 'wc4bp_endpoint_' . $end_point_key ] );
-					$tabs_array[ $end_point_key ]['user_label'] = isset( $this->wc4bp_options['user_label'][ 'wc4bp_endpoint_' . $end_point_key ] ) ? $this->wc4bp_options['user_label'][ 'wc4bp_endpoint_' . $end_point_key ] : $end_point_name;
-				} else {
-					$tabs_array[ $end_point_key ]['position']   = $i;
-					$tabs_array[ $end_point_key ]['enable']     = 0;
-					$tabs_array[ $end_point_key ]['user_label'] = $end_point_name;
-				}
+				
+        $tabs_array[ $end_point_key ]['position']   = isset( $this->wc4bp_options['position'][ 'wc4bp_endpoint_' . $end_point_key ] ) ? $this->wc4bp_options['position'][ 'wc4bp_endpoint_' . $end_point_key ] : $i;
+        $tabs_array[ $end_point_key ]['enable']     = isset( $this->wc4bp_options[ 'wc4bp_endpoint_' . $end_point_key ] );
+        $tabs_array[ $end_point_key ]['user_label'] = isset( $this->wc4bp_options['user_label'][ 'wc4bp_endpoint_' . $end_point_key ] ) ? $this->wc4bp_options['user_label'][ 'wc4bp_endpoint_' . $end_point_key ] : $end_point_name;
+
 				$tabs_array[ $end_point_key ]['label']         = $end_point_name;
 				$tabs_array[ $end_point_key ]['name']          = 'wc4bp_options[wc4bp_endpoint_' . $end_point_key . ']';
 				$tabs_array[ $end_point_key ]['name_position'] = 'wc4bp_options[position][wc4bp_endpoint_' . $end_point_key . ']';
@@ -237,20 +233,18 @@ class wc4bp_admin extends wc4bp_base {
 				$i ++;
 			}
 
-			if ( WC4BP_Loader::getFreemius()->is__premium_only() || WC4BP_Loader::getFreemius()->is_trial() ) {
-				$tabs_array['tab_cart_disabled']['enable'] = isset( $wc4bp_options['tab_cart_disabled'] );
-				if ( isset( $wc4bp_options['position']['tab_cart_disabled'] ) ) {
-					$tabs_array['tab_cart_disabled']['position'] = $wc4bp_options['position']['tab_cart_disabled'];
-				}
-				$tabs_array['tab_checkout_disabled']['enable'] = isset( $wc4bp_options['tab_checkout_disabled'] );
-				if ( isset( $wc4bp_options['position']['tab_checkout_disabled'] ) ) {
-					$tabs_array['tab_checkout_disabled']['position'] = $wc4bp_options['position']['tab_checkout_disabled'];
-				}
-				$tabs_array['tab_track_disabled']['enable'] = isset( $wc4bp_options['tab_track_disabled'] );
-				if ( isset( $wc4bp_options['position']['tab_track_disabled'] ) ) {
-					$tabs_array['tab_track_disabled']['position'] = $wc4bp_options['position']['tab_track_disabled'];
-				}
-			}
+      $tabs_array['tab_cart_disabled']['enable'] = isset( $wc4bp_options['tab_cart_disabled'] );
+      if ( isset( $wc4bp_options['position']['tab_cart_disabled'] ) ) {
+        $tabs_array['tab_cart_disabled']['position'] = $wc4bp_options['position']['tab_cart_disabled'];
+      }
+      $tabs_array['tab_checkout_disabled']['enable'] = isset( $wc4bp_options['tab_checkout_disabled'] );
+      if ( isset( $wc4bp_options['position']['tab_checkout_disabled'] ) ) {
+        $tabs_array['tab_checkout_disabled']['position'] = $wc4bp_options['position']['tab_checkout_disabled'];
+      }
+      $tabs_array['tab_track_disabled']['enable'] = isset( $wc4bp_options['tab_track_disabled'] );
+      if ( isset( $wc4bp_options['position']['tab_track_disabled'] ) ) {
+        $tabs_array['tab_track_disabled']['position'] = $wc4bp_options['position']['tab_track_disabled'];
+      }
 
 			uasort( $tabs_array, array( $this, 'compare_tabs' ) );
 
@@ -313,46 +307,42 @@ class wc4bp_admin extends wc4bp_base {
 				}
 			}
 
-			if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-				$woo_my_account = WC4BP_MyAccount::get_active_endpoints();
-				if ( ! empty( $woo_my_account ) ) {
-					foreach ( $woo_my_account as $active_page_key => $active_page_name ) {
-						$wc4bp_pages_options['selected_pages'][ $active_page_key ] = array(
-							'tab_name' => $active_page_name,
-						);
-					}
-				}
-				// Add the shop tab to the array
-				if ( empty( $wc4bp_options['tab_cart_disabled'] ) ) {
-					$wc4bp_pages_options['selected_pages']['cart'] = array(
-						'tab_name' => __( 'Cart', 'wc4bp' ),
-					);
-				}
-				if ( empty( $wc4bp_options['tab_checkout_disabled'] ) ) {
-					$wc4bp_pages_options['selected_pages']['checkout'] = array(
-						'tab_name' => __( 'Checkout', 'wc4bp' ),
-					);
-				}
-				if ( empty( $wc4bp_options['tab_track_disabled'] ) ) {
-					$wc4bp_pages_options['selected_pages']['track'] = array(
-						'tab_name' => __( 'Track my order', 'wc4bp' ),
-					);
-				}
-				//If wc4bp['tab_shop_default'] is empty add a default value to avoid offset warning
-				if ( ! isset( $wc4bp_options['tab_shop_default'] ) ) {
-					$wc4bp_options['tab_shop_default'] = 'default';
-				} else {
-					if ( ! empty( $wc4bp_pages_options['selected_pages'] ) ) {
-						if ( ! array_key_exists( $wc4bp_options['tab_shop_default'], $wc4bp_pages_options['selected_pages'] ) ) {
-							$wc4bp_options['tab_shop_default'] = 'default';
-						}
-					} else {
-						$wc4bp_options['tab_shop_default'] = 'default';
-					}
-				}
-			} else {
-				$wc4bp_options['tab_shop_default'] = 'default';
-			}
+      $woo_my_account = WC4BP_MyAccount::get_active_endpoints();
+      if ( ! empty( $woo_my_account ) ) {
+        foreach ( $woo_my_account as $active_page_key => $active_page_name ) {
+          $wc4bp_pages_options['selected_pages'][ $active_page_key ] = array(
+            'tab_name' => $active_page_name,
+          );
+        }
+      }
+      // Add the shop tab to the array
+      if ( empty( $wc4bp_options['tab_cart_disabled'] ) ) {
+        $wc4bp_pages_options['selected_pages']['cart'] = array(
+          'tab_name' => __( 'Cart', 'wc4bp' ),
+        );
+      }
+      if ( empty( $wc4bp_options['tab_checkout_disabled'] ) ) {
+        $wc4bp_pages_options['selected_pages']['checkout'] = array(
+          'tab_name' => __( 'Checkout', 'wc4bp' ),
+        );
+      }
+      if ( empty( $wc4bp_options['tab_track_disabled'] ) ) {
+        $wc4bp_pages_options['selected_pages']['track'] = array(
+          'tab_name' => __( 'Track my order', 'wc4bp' ),
+        );
+      }
+      //If wc4bp['tab_shop_default'] is empty add a default value to avoid offset warning
+      if ( ! isset( $wc4bp_options['tab_shop_default'] ) ) {
+        $wc4bp_options['tab_shop_default'] = 'default';
+      } else {
+        if ( ! empty( $wc4bp_pages_options['selected_pages'] ) ) {
+          if ( ! array_key_exists( $wc4bp_options['tab_shop_default'], $wc4bp_pages_options['selected_pages'] ) ) {
+            $wc4bp_options['tab_shop_default'] = 'default';
+          }
+        } else {
+          $wc4bp_options['tab_shop_default'] = 'default';
+        }
+      }
 
 			include_once( WC4BP_ABSPATH_ADMIN_VIEWS_PATH . 'main/html_admin_shop_home.php' );
 
@@ -371,18 +361,16 @@ class wc4bp_admin extends wc4bp_base {
 
 			$custom_pages        = get_option( 'wc4bp_pages_options' );
 			$wc4bp_pages_options = array( 'selected_pages' => array( 'default' => array( 'tab_name' => __( 'Default', 'wc4bp' ) ) ) );
-			if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-				if ( ! empty( $custom_pages ) && is_string( $custom_pages ) ) {
-					$custom_pages_temp = json_decode( $custom_pages, true );
-					if ( isset( $custom_pages_temp['selected_pages'] ) && is_array( $custom_pages_temp['selected_pages'] ) ) {
-						foreach ( $custom_pages_temp['selected_pages'] as $key => $attached_page ) {
-							$wc4bp_pages_options['selected_pages'][ $attached_page['page_id'] ] = array(
-								'tab_name' => $attached_page['tab_name'],
-							);
-						}
-					}
-				}
-			}
+      if ( ! empty( $custom_pages ) && is_string( $custom_pages ) ) {
+        $custom_pages_temp = json_decode( $custom_pages, true );
+        if ( isset( $custom_pages_temp['selected_pages'] ) && is_array( $custom_pages_temp['selected_pages'] ) ) {
+          foreach ( $custom_pages_temp['selected_pages'] as $key => $attached_page ) {
+            $wc4bp_pages_options['selected_pages'][ $attached_page['page_id'] ] = array(
+              'tab_name' => $attached_page['tab_name'],
+            );
+          }
+        }
+      }
 			if ( ! isset( $wc4bp_options['thank_you_page'] ) ) {
 				$wc4bp_options['thank_you_page'] = 'default';
 			}

@@ -30,16 +30,13 @@ class WC4BP_Component extends BP_Component {
 		$this->id                  = wc4bp_Manager::get_shop_slug();
 		$this->wc4bp_pages_options = get_option( 'wc4bp_pages_options' );
 		$this->wc4bp_options       = get_option( 'wc4bp_options' );
-		if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-			/**
-			 * Get the label for the BuddyPress Core
-			 *
-			 * @param String The current label.
-			 */
-			$title = apply_filters( 'wc4bp_shop_component_label', wc4bp_Manager::get_shop_label() );
-		} else {
-			$title = __( 'Shop', 'wc4bp' );
-		}
+    /**
+     * Get the label for the BuddyPress Core
+     *
+     * @param String The current label.
+     */
+    $title = apply_filters( 'wc4bp_shop_component_label', wc4bp_Manager::get_shop_label() );
+
 		parent::start( $this->id, $title, WC4BP_ABSPATH );
 		$this->includes();
 		add_action( 'bp_register_activity_actions', array( $this, 'register_activity_actions' ) );
@@ -167,16 +164,12 @@ class WC4BP_Component extends BP_Component {
 				} );
 			}
 			// Add 'Shop' to the main navigation
-			if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-				/**
-				 * Get the label for the BuddyBar Navigation
-				 *
-				 * @param String The current label.
-				 */
-				$name = apply_filters( 'bp_shop_link_label', wc4bp_Manager::get_shop_label() );
-			} else {
-				$name = __( 'Shop', 'wc4bp' );
-			}
+      /**
+       * Get the label for the BuddyBar Navigation
+       *
+       * @param String The current label.
+       */
+      $name = apply_filters( 'bp_shop_link_label', wc4bp_Manager::get_shop_label() );
 			$main_nav  = array(
 				'name'                    => $name,
 				'slug'                    => $this->slug,
@@ -192,16 +185,12 @@ class WC4BP_Component extends BP_Component {
 
 			// Add shop settings sub page
 			if ( ! isset( $this->wc4bp_options['disable_shop_settings_tab'] ) && function_exists( 'bp_get_settings_slug' ) ) {
-				if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-					/**
-					 * Get the label for the BuddyPress Navigation inside the settings
-					 *
-					 * @param String The current label.
-					 */
-					$name = apply_filters( 'bp_shop_settings_link_label', wc4bp_Manager::get_shop_label() );
-				} else {
-					$name = __( 'Shop', 'wc4bp' );
-				}
+        /**
+         * Get the label for the BuddyPress Navigation inside the settings
+         *
+         * @param String The current label.
+         */
+        $name = apply_filters( 'bp_shop_settings_link_label', wc4bp_Manager::get_shop_label() );
 				$sub_nav[] = array(
 					'name'            => $name,
 					'slug'            => wc4bp_Manager::get_shop_slug(),
@@ -313,16 +302,12 @@ class WC4BP_Component extends BP_Component {
 				$user_domain = bp_loggedin_user_domain();
 				if ( ! isset( $this->wc4bp_options['disable_shop_settings_tab'] ) && function_exists( 'bp_get_settings_slug' ) ) {
 					$settings_link = trailingslashit( $user_domain . bp_get_settings_slug() );
-					if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-						/**
-						 * Get the label for the Setting inside BP
-						 *
-						 * @param String The current label.
-						 */
-						$title = apply_filters( 'bp_shop_settings_nav_link_label', wc4bp_Manager::get_shop_label() );
-					} else {
-						$title = __( 'Shop', 'wc4bp' );
-					}
+          /**
+           * Get the label for the Setting inside BP
+           *
+           * @param String The current label.
+           */
+          $title = apply_filters( 'bp_shop_settings_nav_link_label', wc4bp_Manager::get_shop_label() );
 					// Shop settings menu
 					$wp_admin_nav[] = array(
 						'parent' => 'my-account-settings',
@@ -332,16 +317,12 @@ class WC4BP_Component extends BP_Component {
 					);
 				}
 				$shop_link = trailingslashit( $user_domain . $this->id );
-				if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-					/**
-					 * Get the label for the admin bar
-					 *
-					 * @param String The current label.
-					 */
-					$title = apply_filters( 'bp_shop_nav_link_label', wc4bp_Manager::get_shop_label() );
-				} else {
-					$title = __( 'Shop', 'wc4bp' );
-				}
+        /**
+         * Get the label for the admin bar
+         *
+         * @param String The current label.
+         */
+        $title = apply_filters( 'bp_shop_nav_link_label', wc4bp_Manager::get_shop_label() );
 				// Shop menu items
 				$wp_admin_nav[]      = array(
 					'parent' => $bp->my_account_menu_id,
@@ -425,46 +406,42 @@ class WC4BP_Component extends BP_Component {
 					if ( ! empty( $this->wc4bp_options ) && is_string( $this->wc4bp_options ) ) {
 						$this->wc4bp_options = json_decode( $this->wc4bp_options, true );
 					}
-					if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-						if ( isset( $this->wc4bp_options[ 'wc4bp_endpoint_' . $this->wc4bp_options['tab_shop_default'] ] ) || 'default' === $this->wc4bp_options['tab_shop_default'] ) {
-							//Determine what is default
-							$wc4bp_pages_options = array();
-							$endpoints           = wc4bp_Manager::get_shop_endpoints( false );
-							if ( isset( $endpoints['checkout'] ) ) {
-								unset( $endpoints['checkout'] );
-							}
-							foreach ( $endpoints as $active_page_key => $active_page_name ) {
-								if ( ! isset( $this->wc4bp_options[ 'tab_' . $active_page_key . '_disabled' ] ) ) {
-									$wc4bp_pages_options[] = $active_page_key;
-								}
-							}
-							$woo_endpoints = WC4BP_MyAccount::get_available_endpoints();
-							foreach ( $woo_endpoints as $active_page_key => $active_page_name ) {
-								if ( ! isset( $this->wc4bp_options[ 'wc4bp_endpoint_' . $active_page_key ] ) ) {
-									$wc4bp_pages_options[] = $active_page_key;
-								}
-							}
-							$custom_pages = get_option( 'wc4bp_pages_options' );
-							if ( ! empty( $custom_pages ) && is_string( $custom_pages ) ) {
-								$custom_pages_temp = json_decode( $custom_pages, true );
-								if ( isset( $custom_pages_temp['selected_pages'] ) && is_array( $custom_pages_temp['selected_pages'] ) ) {
-									foreach ( $custom_pages_temp['selected_pages'] as $key => $attached_page ) {
-										$wc4bp_pages_options[] = $attached_page['tab_slug'];
-									}
-								}
-							}
-							if ( ! empty( $wc4bp_pages_options ) ) {
-								$bp->current_action = $wc4bp_pages_options[0];
-							} else {
-								$bp->current_action = '';
-							}
+          if ( isset( $this->wc4bp_options[ 'wc4bp_endpoint_' . $this->wc4bp_options['tab_shop_default'] ] ) || 'default' === $this->wc4bp_options['tab_shop_default'] ) {
+            //Determine what is default
+            $wc4bp_pages_options = array();
+            $endpoints           = wc4bp_Manager::get_shop_endpoints( false );
+            if ( isset( $endpoints['checkout'] ) ) {
+              unset( $endpoints['checkout'] );
+            }
+            foreach ( $endpoints as $active_page_key => $active_page_name ) {
+              if ( ! isset( $this->wc4bp_options[ 'tab_' . $active_page_key . '_disabled' ] ) ) {
+                $wc4bp_pages_options[] = $active_page_key;
+              }
+            }
+            $woo_endpoints = WC4BP_MyAccount::get_available_endpoints();
+            foreach ( $woo_endpoints as $active_page_key => $active_page_name ) {
+              if ( ! isset( $this->wc4bp_options[ 'wc4bp_endpoint_' . $active_page_key ] ) ) {
+                $wc4bp_pages_options[] = $active_page_key;
+              }
+            }
+            $custom_pages = get_option( 'wc4bp_pages_options' );
+            if ( ! empty( $custom_pages ) && is_string( $custom_pages ) ) {
+              $custom_pages_temp = json_decode( $custom_pages, true );
+              if ( isset( $custom_pages_temp['selected_pages'] ) && is_array( $custom_pages_temp['selected_pages'] ) ) {
+                foreach ( $custom_pages_temp['selected_pages'] as $key => $attached_page ) {
+                  $wc4bp_pages_options[] = $attached_page['tab_slug'];
+                }
+              }
+            }
+            if ( ! empty( $wc4bp_pages_options ) ) {
+              $bp->current_action = $wc4bp_pages_options[0];
+            } else {
+              $bp->current_action = '';
+            }
 
-						} else {
-							$bp->current_action = $this->wc4bp_options['tab_shop_default'];
-						}
-					} else {
-						$bp->current_action = 'cart';
-					}
+          } else {
+            $bp->current_action = $this->wc4bp_options['tab_shop_default'];
+          }
 				}
 				$path = $this->get_endpoint_path( $bp->current_action );
 			}

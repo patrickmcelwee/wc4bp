@@ -212,41 +212,32 @@ class wc4bp_Manager {
 	}
 
 	public static function get_shop_endpoints( $include_home = true ) {
-		if ( WC4BP_Loader::getFreemius()->is_plan_or_trial__premium_only( wc4bp_base::$professional_plan_id ) ) {
-			$shop_tabs = array(
-				/**
-				 * String used to identify the shop link label.
-				 *
-				 * @param string  By default Shop localized string.
-				 */
-				'home'     => apply_filters( 'bp_shop_link_label', __( 'Shop', 'wc4bp' ) ),
-				/**
-				 * String used to identify the cart link label.
-				 *
-				 * @param string  By default Shopping Cart localized string.
-				 */
-				'cart'     => apply_filters( 'bp_cart_link_label', __( 'Shopping Cart', 'wc4bp' ) ),
-				/**
-				 * String used to identify the checkout link label.
-				 *
-				 * @param string  By default Checkout localized string.
-				 */
-				'checkout' => apply_filters( 'bp_checkout_link_label', __( 'Checkout', 'wc4bp' ) ),
-				/**
-				 * String used to identify the track link label.
-				 *
-				 * @param string  By default Track localized string.
-				 */
-				'track'    => apply_filters( 'bp_track_link_label', __( 'Track your order', 'wc4bp' ) ),
-			);
-		} else {
-			$shop_tabs = array(
-				'home'     => __( 'Shop', 'wc4bp' ),
-				'cart'     => __( 'Shopping Cart', 'wc4bp' ),
-				'checkout' => __( 'Checkout', 'wc4bp' ),
-				'track'    => __( 'Track your order', 'wc4bp' ),
-			);
-		}
+    $shop_tabs = array(
+      /**
+       * String used to identify the shop link label.
+       *
+       * @param string  By default Shop localized string.
+       */
+      'home'     => apply_filters( 'bp_shop_link_label', __( 'Shop', 'wc4bp' ) ),
+      /**
+       * String used to identify the cart link label.
+       *
+       * @param string  By default Shopping Cart localized string.
+       */
+      'cart'     => apply_filters( 'bp_cart_link_label', __( 'Shopping Cart', 'wc4bp' ) ),
+      /**
+       * String used to identify the checkout link label.
+       *
+       * @param string  By default Checkout localized string.
+       */
+      'checkout' => apply_filters( 'bp_checkout_link_label', __( 'Checkout', 'wc4bp' ) ),
+      /**
+       * String used to identify the track link label.
+       *
+       * @param string  By default Track localized string.
+       */
+      'track'    => apply_filters( 'bp_track_link_label', __( 'Track your order', 'wc4bp' ) ),
+    );
 		if ( ! $include_home ) {
 			unset( $shop_tabs['home'] );
 		}

@@ -9,9 +9,9 @@ foreach ( $tabs_array as $end_point_key => $end_point_name ) {
 	$position   = $end_point_name['position'];
 	$user_label = (isset($end_point_name['user_label']))? $end_point_name['user_label'] : $end_point_name['label'];
 	$text = sprintf( __( 'Turn off %s tab.', 'wc4bp' ), $end_point_name['label'] );
-	echo "<p " . $this->disable_class_tag( 'p' ) . ">" .
+	echo "<p>" .
 	     "<label><span class=\"dashicons dashicons-sort\"></span>" .
-	     "<input " . $this->disable_input_tag( 'checkbox' ) . " name='" . $end_point_name['name'] . "' type='checkbox' value='1' " . checked( $tab_select, 1, false ) . " />" .
+	     "<input name='" . $end_point_name['name'] . "' type='checkbox' value='1' " . checked( $tab_select, 1, false ) . " />" .
 	     "<input class='wc4bp-tabs-position' type='hidden' name='" . $end_point_name['name_position'] . "' value='" . $position . "'><b>" . $text . "</b>" .
-	     "</label> Or set tab's name <input " . $this->disable_input_tag( 'text' ) . " type='text' name='" . $end_point_name['name_label'] . "' value='" . esc_attr($user_label). "'></p>";
+	     "</label> Or set tab's name <input type='text' name='" . $end_point_name['name_label'] . "' value='" . esc_attr($user_label). "'></p>";
 }
