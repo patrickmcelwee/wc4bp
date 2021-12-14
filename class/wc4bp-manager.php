@@ -60,7 +60,6 @@ class wc4bp_Manager {
 				$wc_path = WooCommerce::instance()->plugin_path();
 				include_once( $wc_path . '/includes/class-wc-frontend-scripts.php' );
 				WC_Frontend_Scripts::init();
-				new WC4BP_Activity_Stream();
 				new WC4BP_MyAccount_Content();
 				new wc4bp_Woocommerce();
 				new WC4BP_MyAccount();
