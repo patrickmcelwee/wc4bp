@@ -35,7 +35,6 @@ class wc4bp_Manager {
 		try {
 			self::$shop_label = __( 'Shop', 'wc4bp' );
 			//Load resources
-			require_once 'wc4bp-activity-stream.php';
 			require_once 'wc4bp-myaccount-content.php';
 			require_once 'wc4bp-myaccount.php';
 			require_once 'wc4bp-myaccount-private.php';

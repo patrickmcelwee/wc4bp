@@ -39,7 +39,6 @@ class WC4BP_Component extends BP_Component {
 
 		parent::start( $this->id, $title, WC4BP_ABSPATH );
 		$this->includes();
-		add_action( 'bp_register_activity_actions', array( $this, 'register_activity_actions' ) );
 		add_filter( 'bp_located_template', array( $this, 'wc4bp_members_load_template_filter' ), 10, 2 );
 	}
 
@@ -69,27 +68,6 @@ class WC4BP_Component extends BP_Component {
 			}
 			new wc4bp_Sync();
 			new wc4bp_redirect();
-		} catch ( Exception $exception ) {
-			WC4BP_Loader::get_exception_handler()->save_exception( $exception->getTrace() );
-		}
-	}
-
-	/**
-	 * Register activity actions
-	 *
-	 * @since     1.0.4
-	 */
-	function register_activity_actions() {
-		try {
-			if ( ! bp_is_active( 'activity' ) ) {
-				return;
-			}
-			bp_activity_set_action( $this->id, 'new_shop_review', __( 'New review created', 'wc4bp' ) );
-			bp_activity_set_action( $this->id, 'new_shop_purchase', __( 'New purchase made', 'wc4bp' ) );
-			/**
-			 * New activity register
-			 */
-			do_action( 'wc4bp_register_activity_actions' );
 		} catch ( Exception $exception ) {
 			WC4BP_Loader::get_exception_handler()->save_exception( $exception->getTrace() );
 		}
@@ -183,25 +161,6 @@ class WC4BP_Component extends BP_Component {
 
 			$sub_nav = $this->get_endpoints( $sub_nav, $shop_link );
 
-			// Add shop settings sub page
-			if ( ! isset( $this->wc4bp_options['disable_shop_settings_tab'] ) && function_exists( 'bp_get_settings_slug' ) ) {
-        /**
-         * Get the label for the BuddyPress Navigation inside the settings
-         *
-         * @param String The current label.
-         */
-        $name = apply_filters( 'bp_shop_settings_link_label', wc4bp_Manager::get_shop_label() );
-				$sub_nav[] = array(
-					'name'            => $name,
-					'slug'            => wc4bp_Manager::get_shop_slug(),
-					'parent_url'      => trailingslashit( bp_loggedin_user_domain() . bp_get_settings_slug() ),
-					'parent_slug'     => bp_get_settings_slug(),
-					'screen_function' => 'wc4bp_screen_settings',
-					'position'        => 30,
-					'item_css_id'     => 'shop-settings',
-					'user_has_access' => bp_is_my_profile(),
-				);
-			}
 			$position = 40;
 			global $bp, $woocommerce;
 			if ( isset( $wc4bp_pages_options['selected_pages'] ) && is_array( $wc4bp_pages_options['selected_pages'] ) ) {
@@ -300,22 +259,6 @@ class WC4BP_Component extends BP_Component {
 			$wp_admin_nav = array();
 			if ( is_user_logged_in() ) {
 				$user_domain = bp_loggedin_user_domain();
-				if ( ! isset( $this->wc4bp_options['disable_shop_settings_tab'] ) && function_exists( 'bp_get_settings_slug' ) ) {
-					$settings_link = trailingslashit( $user_domain . bp_get_settings_slug() );
-          /**
-           * Get the label for the Setting inside BP
-           *
-           * @param String The current label.
-           */
-          $title = apply_filters( 'bp_shop_settings_nav_link_label', wc4bp_Manager::get_shop_label() );
-					// Shop settings menu
-					$wp_admin_nav[] = array(
-						'parent' => 'my-account-settings',
-						'id'     => 'my-account-settings-shop',
-						'title'  => $title,
-						'href'   => trailingslashit( $settings_link . wc4bp_Manager::get_shop_slug() ),
-					);
-				}
 				$shop_link = trailingslashit( $user_domain . $this->id );
         /**
          * Get the label for the admin bar

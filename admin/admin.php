@@ -134,7 +134,6 @@ class wc4bp_admin extends wc4bp_base {
 		try {
 			$wc4bp_options                = $this->wc4bp_options;
 			$tab_activity_disabled        = 0;
-			$disable_shop_settings_tab    = 0;
 			$tab_my_account_disabled      = 0;
 			$tab_my_account_shop_label    = wc4bp_Manager::$shop_label;
 			$tab_my_account_shop_url      = wc4bp_Manager::$shop_slug;
@@ -155,9 +154,6 @@ class wc4bp_admin extends wc4bp_base {
 			if ( isset( $wc4bp_options['tab_activity_disabled'] ) ) {
 				$tab_activity_disabled = 1;
 			}
-			if ( isset( $wc4bp_options['disable_shop_settings_tab'] ) ) {
-				$disable_shop_settings_tab = 1;
-			}
 			if ( isset( $wc4bp_options['tab_my_account_disabled'] ) ) {
 				$tab_my_account_disabled = 1;
 			}
@@ -172,9 +168,6 @@ class wc4bp_admin extends wc4bp_base {
 			} else {
 				if ( isset( $wc4bp_options['tab_activity_disabled'] ) ) {
 					$tab_activity_disabled = $wc4bp_options['tab_activity_disabled'];
-				}
-				if ( isset( $wc4bp_options['disable_shop_settings_tab'] ) ) {
-					$disable_shop_settings_tab = $wc4bp_options['disable_shop_settings_tab'];
 				}
 				if ( isset( $wc4bp_options['tab_my_account_disabled'] ) ) {
 					$tab_my_account_disabled = $wc4bp_options['tab_my_account_disabled'];

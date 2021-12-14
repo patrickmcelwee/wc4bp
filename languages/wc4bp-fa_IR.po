@@ -167,14 +167,6 @@ msgstr "فکس"
 msgid "Shipping Address"
 msgstr "آدرس حمل و نقل"
 
-#: class/wc4bp-activity-stream.php:85
-msgid "%s wrote a review about <a href=\"%s\">%s</a>"
-msgstr "٪ s یک بررسی در مورد <a href=\"%s\">٪ s</a> نوشت"
-
-#: class/wc4bp-activity-stream.php:166
-msgid "%s purchased %s"
-msgstr "٪ s٪ s را خریداری کرد"
-
 #: class/wc4bp-manage-admin.php:74
 msgid "WC4BP auto-generated"
 msgstr "WC4BP خودکار تولید شده است"
