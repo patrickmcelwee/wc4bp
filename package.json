@@ -4,7 +4,7 @@
   "author": "ThemeKraft Team.",
   "license": "GPL-2.0+",
   "homepage": "http://www.themekraft.com",
-  "version": "3.1.5",
+  "version": "3.1.18.2",
   "main": "gulpfile.js",
   "dependencies": {},
   "scripts": {
