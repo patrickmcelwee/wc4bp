@@ -71,7 +71,7 @@ class WC4BP_Required {
 			if ( 'BuddyBoss Theme' != $theme->name && 'BuddyBoss Theme' != $theme->parent_theme ) {
 				$required_plugins[] = array(
 					'name'     => 'BuddyBoss Platform',
-					'slug'     => 'buddyboss',
+					'slug'     => 'buddyboss-platform',
 					'version'  => '1.8',
 					'required' => true,
 				);
